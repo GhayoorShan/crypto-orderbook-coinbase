@@ -38,8 +38,8 @@ const OrderBookTable: React.FC<TableProps> = ({ data, label, type, isLoading }) 
                                   } 100%)`
                               }}
                           >
-                              <span>{size}</span>
-                              <span className={type === 'bids' ? 'text-green-500' : 'text-red-500'}>{price}</span>
+                              <span>{size.toFixed(8)}</span>
+                              <span className={type === 'bids' ? 'text-green-500' : 'text-red-500'}>{price.toFixed(2)}</span>
                           </div>
                       ))}
             </div>

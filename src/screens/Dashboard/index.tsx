@@ -18,10 +18,7 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
             <div className="container mx-auto py-4">
-                <div className="flex flex-row justify-between">
-                    <p>chart</p>
-                    <OrderBook pair={pair} />
-                </div>
+                <OrderBook pair={pair} />
             </div>
         </div>
     );

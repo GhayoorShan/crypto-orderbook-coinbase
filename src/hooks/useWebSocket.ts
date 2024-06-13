@@ -5,17 +5,16 @@ interface OrderUpdate {
     changes: [string, string, string][];
 }
 
-interface TickerUpdate {
-    type: string;
-    price: string;
-}
-
 const COINBASE_WS_URL = 'wss://ws-feed.pro.coinbase.com';
 
-const useWebSocket = (pair: string, onOrderUpdate: (update: OrderUpdate) => void, onTickerUpdate: (price: number) => void) => {
+const useWebSocket = (
+    pair: string,
+    onOrderUpdate: (update: OrderUpdate) => void,
+    onTickerUpdate: (price: number) => void,
+    onBestBidsUpdate: ([]) => void
+) => {
     const ws = useRef<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
-    console.log('isConnected', isConnected);
 
     const messageQueue = useRef<any[]>([]);
 
@@ -44,6 +43,7 @@ const useWebSocket = (pair: string, onOrderUpdate: (update: OrderUpdate) => void
                 onOrderUpdate(data);
             } else if (data.type === 'ticker') {
                 onTickerUpdate(parseFloat(data.price));
+                onBestBidsUpdate(data);
             }
         };
 
@@ -70,7 +70,7 @@ const useWebSocket = (pair: string, onOrderUpdate: (update: OrderUpdate) => void
                 ws.current.close();
             }
         };
-    }, [pair, onOrderUpdate, onTickerUpdate]);
+    }, [pair, onOrderUpdate, onTickerUpdate, onBestBidsUpdate]);
 
     return { sendMessage };
 };
