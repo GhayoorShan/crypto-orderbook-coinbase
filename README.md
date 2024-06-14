@@ -1,5 +1,6 @@
 # React + TypeScript + Vite
-![image](https://github.com/GhayoorShan/crypto-orderbook-coinbase/assets/38887731/77a10c16-1c98-4347-b452-a6e86d21df2b)
+![image](https://github.com/GhayoorShan/crypto-orderbook-coinbase/assets/38887731/a313e590-a151-4ab8-8851-1e86d4be02cc)
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
