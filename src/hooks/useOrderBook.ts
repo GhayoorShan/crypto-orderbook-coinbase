@@ -47,6 +47,7 @@ const useOrderBook = (pair: string, aggregation: number) => {
     );
     const initializeOrderBook = async () => {
         setIsLoading(true);
+        setTickerData([]);
         setError(null);
         try {
             const { bids, asks } = await fetchInitialOrderBook(pair);

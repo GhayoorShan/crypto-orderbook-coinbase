@@ -42,7 +42,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
 
     return (
         <div className="flex flex-row justify-between items-center gap-20 pt-10">
-            <RealTimeChart tickerData={tickerData} />
+            <RealTimeChart tickerData={tickerData} isLoading={isLoading} />
             <div className="flex justify-between">
                 <div className="orderbook bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm min-w-[300px]">
                     <div className="controls mb-4 flex justify-between items-center">
