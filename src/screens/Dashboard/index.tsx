@@ -11,13 +11,13 @@ const Dashboard: React.FC = () => {
     };
     return (
         <div className=" bg-gray-900 min-h-screen text-white">
-            <div className="bg-gray-800 py-4 shadow-lg">
+            <div className="bg-gray-800 py-4 shadow-lg px-5">
                 <div className="container mx-auto flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-white">Crypto Order Book</h1>
+                    <h1 className="text-3xl font-semibold text-gray-300">Crypto Order Book</h1>
                     <Dropdown options={ALLOWED_CURRENCY} value={pair.toString()} onChange={handleChange} label="Select Currency Pair" />
                 </div>
             </div>
-            <div className="container mx-auto py-4">
+            <div className="container mx-auto py-3 px-5">
                 <OrderBook pair={pair} />
             </div>
         </div>

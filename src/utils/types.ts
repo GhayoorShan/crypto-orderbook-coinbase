@@ -11,3 +11,7 @@ export interface TickerData {
     best_ask_size: string;
     time: string;
 }
+
+export interface OrderBookProps {
+    pair: string;
+}

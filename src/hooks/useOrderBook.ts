@@ -3,6 +3,7 @@ import useWebSocket from './useWebSocket';
 import { getTopOrdersWithPercentage, updateOrderBook } from '../utils/helpers';
 import { fetchInitialOrderBook } from '../utils/api/coinbaseApi';
 import { Order, TickerData } from '../utils/types';
+import { initialTickerCurrentData, initialTickerData } from '../utils/constants';
 
 const useOrderBook = (pair: string, aggregation: number) => {
     const [bids, setBids] = useState<Map<number, number>>(new Map());
@@ -12,15 +13,9 @@ const useOrderBook = (pair: string, aggregation: number) => {
     const [topBids, setTopBids] = useState<Order[]>([]);
     const [topAsks, setTopAsks] = useState<Order[]>([]);
     const [currentPrice, setCurrentPrice] = useState<number | null>(null);
-    const [tickerData, setTickerData] = useState<TickerData[]>([
-        {
-            best_bid: '',
-            best_bid_size: '',
-            best_ask: '',
-            best_ask_size: '',
-            time: ''
-        }
-    ]);
+    const [tickerData, setTickerData] = useState<TickerData[]>(initialTickerData);
+    const [tickerCurrentData, setTickerCurrentData] = useState<TickerData>(initialTickerCurrentData);
+
     const { sendMessage } = useWebSocket(
         pair,
         useCallback((update) => {
@@ -35,10 +30,9 @@ const useOrderBook = (pair: string, aggregation: number) => {
             setCurrentPrice(price);
         }, []),
         useCallback((data: any) => {
-            // console.log('data', data);
-
             const { best_bid, best_bid_size, best_ask, best_ask_size, time } = data;
             const newData: TickerData = { best_bid, best_bid_size, best_ask, best_ask_size, time };
+            setTickerCurrentData(newData);
             setTickerData((prevData) => {
                 const updatedData = [...prevData, newData];
                 return updatedData.slice(-200);
@@ -87,7 +81,7 @@ const useOrderBook = (pair: string, aggregation: number) => {
         setTopAsks(getTopOrdersWithPercentage(asks, 10, true, aggregation));
     }, [bids, asks, aggregation]);
 
-    return { topBids, topAsks, currentPrice, tickerData, isLoading, error, setBids, setAsks };
+    return { topBids, topAsks, currentPrice, tickerData, tickerCurrentData, isLoading, error, setBids, setAsks };
 };
 
 export default useOrderBook;
