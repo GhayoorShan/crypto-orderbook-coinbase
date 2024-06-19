@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { lazy, useEffect, useRef, useState } from 'react';
 import useOrderBook from '../../../hooks/useOrderBook';
 import { ALLOWED_AGGREGATION } from '../../../utils/constants';
 import Dropdown from '../../../components/atom/dropdown';
 import OrderBookTable from '../../../components/molecule/table';
-import RealTimeChart from '../RealTimeChart';
-import TopOfBook from '../TopOfBook';
 import { OrderBookProps } from '../../../utils/types';
+
+const RealTimeChart = lazy(() => import('../RealTimeChart'));
+const TopOfBook = lazy(() => import('../TopOfBook'));
 
 const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
     const [aggregation, setAggregation] = useState<number>(0.01);

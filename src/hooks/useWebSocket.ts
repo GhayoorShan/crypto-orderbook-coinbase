@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface OrderUpdate {
     type: string;
@@ -14,7 +14,6 @@ const useWebSocket = (
     onBestBidsUpdate: ([]) => void
 ) => {
     const ws = useRef<WebSocket | null>(null);
-    const [isConnected, setIsConnected] = useState(false);
 
     const messageQueue = useRef<any[]>([]);
 
@@ -30,7 +29,6 @@ const useWebSocket = (
         ws.current = new WebSocket(COINBASE_WS_URL);
 
         ws.current.onopen = () => {
-            setIsConnected(true);
             while (messageQueue.current.length > 0) {
                 const message = messageQueue.current.shift();
                 ws.current?.send(JSON.stringify(message));
@@ -48,7 +46,7 @@ const useWebSocket = (
         };
 
         ws.current.onclose = () => {
-            setIsConnected(false);
+            console.log('WebSocket closed');
         };
 
         ws.current.onerror = (error) => {

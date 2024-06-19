@@ -1,11 +1,11 @@
 import { Order } from './types';
-let check = true;
 const aggregatePrice = (price: number, aggregation: number): number => {
     return Math.floor(price / aggregation) * aggregation;
 };
 
 export const getTopOrdersWithPercentage = (orders: Map<number, number>, topN: number, isAscending: boolean, aggregation: number): Order[] => {
     const aggregatedOrders = new Map<number, number>();
+    console.log('isAscending', isAscending);
 
     // Aggregate orders based on the current aggregation level
     orders.forEach((size, price) => {
@@ -33,6 +33,8 @@ export const getTopOrdersWithPercentage = (orders: Map<number, number>, topN: nu
 
 export const updateOrderBook = (orderBook: Map<number, number>, changes: [string, string, string][], side: 'buy' | 'sell'): Map<number, number> => {
     changes.forEach(([currentSide, priceStr, sizeStr]) => {
+        console.log(currentSide, priceStr, sizeStr);
+
         const price = parseFloat(priceStr);
         const size = parseFloat(sizeStr);
 
