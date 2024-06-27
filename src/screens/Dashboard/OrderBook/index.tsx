@@ -1,10 +1,12 @@
-import React, { lazy, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import useOrderBook from '../../../hooks/useOrderBook';
 import { ALLOWED_AGGREGATION } from '../../../utils/constants';
 import Dropdown from '../../../components/atom/dropdown';
-import OrderBookTable from '../../../components/molecule/table';
 import { OrderBookProps } from '../../../utils/types';
+import ErrorBoundary from '../../../components/molecule/errorBoundary';
 
+// Dynamically import the components
+const OrderBookTable = lazy(() => import('../../../components/molecule/table'));
 const RealTimeChart = lazy(() => import('../RealTimeChart'));
 const TopOfBook = lazy(() => import('../TopOfBook'));
 
@@ -39,10 +41,18 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8 ">
             <div className="">
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-10 w-full py-5 justify-center">
-                    <TopOfBook price={tickerCurrentData.best_bid} size={tickerCurrentData.best_bid_size} title="Best Bid" type="bid" />
-                    <TopOfBook price={tickerCurrentData.best_ask} size={tickerCurrentData.best_ask_size} title="Best Ask" type="ask" />
+                    <ErrorBoundary>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <TopOfBook price={tickerCurrentData.best_bid} size={tickerCurrentData.best_bid_size} title="Best Bid" type="bid" />
+                            <TopOfBook price={tickerCurrentData.best_ask} size={tickerCurrentData.best_ask_size} title="Best Ask" type="ask" />
+                        </Suspense>
+                    </ErrorBoundary>
                 </div>
-                <RealTimeChart tickerData={tickerData} isLoading={isLoading} />
+                <ErrorBoundary>
+                    <Suspense fallback={<div>Loading chart...</div>}>
+                        <RealTimeChart tickerData={tickerData} isLoading={isLoading} />
+                    </Suspense>
+                </ErrorBoundary>
             </div>
             <div className="">
                 <div className="orderbook bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm min-w-[300px]">
@@ -53,8 +63,16 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
                         <Dropdown options={ALLOWED_AGGREGATION} value={aggregation.toString()} onChange={handleIncrementChange} label="Aggregation" />
                     </div>
                     <div className="flex flex-col">
-                        <OrderBookTable data={topBids} label="Bids" type="bids" isLoading={isLoading} />
-                        <OrderBookTable data={topAsks} label="Asks" type="asks" isLoading={isLoading} />
+                        <ErrorBoundary>
+                            <Suspense fallback={<div>Loading bids...</div>}>
+                                <OrderBookTable data={topBids} label="Bids" type="bids" isLoading={isLoading} />
+                            </Suspense>
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Suspense fallback={<div>Loading asks...</div>}>
+                                <OrderBookTable data={topAsks} label="Asks" type="asks" isLoading={isLoading} />
+                            </Suspense>
+                        </ErrorBoundary>
                     </div>
                 </div>
             </div>
