@@ -5,7 +5,7 @@ const aggregatePrice = (price: number, aggregation: number): number => {
 
 export const getTopOrdersWithPercentage = (orders: Map<number, number>, topN: number, isAscending: boolean, aggregation: number): Order[] => {
     const aggregatedOrders = new Map<number, number>();
-    console.log('isAscending', isAscending);
+    console.log('isAscending-', isAscending);
 
     // Aggregate orders based on the current aggregation level
     orders.forEach((size, price) => {
